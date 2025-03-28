@@ -2,7 +2,7 @@ import { embedMany, embed } from "ai";
 import { openai } from "@ai-sdk/openai";
 import { MDocument, rerank } from "@mastra/rag";
 import { createVectorQueryTool } from "@mastra/rag";
-import { mastra } from "../../mastra";
+import { mastra } from "..";
 import { readdir, readFile } from 'fs/promises';
 import { join, extname, basename } from 'path';
 

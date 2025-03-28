@@ -2,7 +2,7 @@
 import { Mastra } from '@mastra/core/mastra';
 import { createLogger } from '@mastra/core/logger';
 import { weatherAgent } from './agents';
-import {initVector} from './agents/exampledoc';
+import {initVector} from './helpers/vectorManagement';
 import { PgVector } from '@mastra/pg';
 
 

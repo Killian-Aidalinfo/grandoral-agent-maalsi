@@ -1,7 +1,7 @@
 import { openai } from '@ai-sdk/openai';
 import { Agent } from '@mastra/core/agent';
 import { PGVECTOR_PROMPT } from "@mastra/rag";
-import { vectorQueryTool } from "./exampledoc";
+import { vectorQueryTool } from "../helpers/vectorManagement";
 
 import { Memory } from "@mastra/memory";
  
