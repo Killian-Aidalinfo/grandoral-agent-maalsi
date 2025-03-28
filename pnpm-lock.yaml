@@ -14,6 +14,9 @@ importers:
       '@mastra/core':
         specifier: ^0.7.0
         version: 0.7.0(react@19.0.0)
+      '@mastra/memory':
+        specifier: ^0.2.6
+        version: 0.2.6(@aws-crypto/sha256-js@5.2.0)(@aws-sdk/credential-providers@3.777.0)(@huggingface/transformers@3.4.1)(cohere-ai@7.16.0)(gpt-tokenizer@2.9.0)(openai@4.90.0(ws@8.18.1)(zod@3.24.2))(pg-query-stream@4.8.1(pg@8.14.1))(react@19.0.0)(tree-sitter@0.22.4)(typescript@5.8.2)(web-tree-sitter@0.24.7)(ws@8.18.1)
       '@mastra/pg':
         specifier: ^0.2.6
         version: 0.2.6(pg-query-stream@4.8.1(pg@8.14.1))(react@19.0.0)
@@ -1088,6 +1091,9 @@ packages:
   '@mastra/deployer@0.2.5':
     resolution: {integrity: sha512-3F7wvmN6RgmzQfBzbSrCP2a7BSU+pirh9/Fzljvv+qrfepL5RpuSZhiDoWLDt/w3rqD0Lys3JSQX6mwNdRDhGw==}
 
+  '@mastra/memory@0.2.6':
+    resolution: {integrity: sha512-a42mMjd/qm4m44jpzm9QqLuXril4yJyK/JZ4Il89FY10zeUmONRYW5GWgageS5uJ2T5fM/XdvWRM3yMMptc5GQ==}
+
   '@mastra/pg@0.2.6':
     resolution: {integrity: sha512-hWy6ro7E0Bpu+KgvFtO2bUlqIPAvLsrEkDTeI2TmOTeJOfSQ1ugTDRb+oxSDHlq+xzBrCD9RGRc9GRlvL9+ALA==}
 
@@ -1626,6 +1632,35 @@ packages:
   '@qdrant/openapi-typescript-fetch@1.2.6':
     resolution: {integrity: sha512-oQG/FejNpItrxRHoyctYvT3rwGZOnK4jr3JdppO/c78ktDvkWiPXPHNsrDf33K9sZdRb6PR7gi4noIapu5q4HA==}
     engines: {node: '>=18.0.0', pnpm: '>=8'}
+
+  '@redis/bloom@1.2.0':
+    resolution: {integrity: sha512-HG2DFjYKbpNmVXsa0keLHp/3leGJz1mjh09f2RLGGLQZzSHpkmZWuwJbAvo3QcRY8p80m5+ZdXZdYOSBLlp7Cg==}
+    peerDependencies:
+      '@redis/client': ^1.0.0
+
+  '@redis/client@1.6.0':
+    resolution: {integrity: sha512-aR0uffYI700OEEH4gYnitAnv3vzVGXCFvYfdpu/CJKvk4pHfLPEy/JSZyrpQ+15WhXe1yJRXLtfQ84s4mEXnPg==}
+    engines: {node: '>=14'}
+
+  '@redis/graph@1.1.1':
+    resolution: {integrity: sha512-FEMTcTHZozZciLRl6GiiIB4zGm5z5F3F6a6FZCyrfxdKOhFlGkiAqlexWMBzCi4DcRoyiOsuLfW+cjlGWyExOw==}
+    peerDependencies:
+      '@redis/client': ^1.0.0
+
+  '@redis/json@1.0.7':
+    resolution: {integrity: sha512-6UyXfjVaTBTJtKNG4/9Z8PSpKE6XgSyEb8iwaqDcy+uKrd/DGYHTWkUdnQDyzm727V7p21WUMhsqz5oy65kPcQ==}
+    peerDependencies:
+      '@redis/client': ^1.0.0
+
+  '@redis/search@1.2.0':
+    resolution: {integrity: sha512-tYoDBbtqOVigEDMAcTGsRlMycIIjwMCgD8eR2t0NANeQmgK/lvxNAvYyb6bZDD4frHRhIHkJu2TBRvB0ERkOmw==}
+    peerDependencies:
+      '@redis/client': ^1.0.0
+
+  '@redis/time-series@1.1.0':
+    resolution: {integrity: sha512-c1Q99M5ljsIuc4YdaCwfUEXsofakb9c8+Zse2qxTadu8TalLXuAESzLvFAvNVbkmSlvlzIQOLpBCmWI9wTOt+g==}
+    peerDependencies:
+      '@redis/client': ^1.0.0
 
   '@rollup/plugin-alias@5.1.1':
     resolution: {integrity: sha512-PR9zDb+rOzkRb2VD+EuKB7UC41vU5DIwZ5qqCpk0KJudcWAyi8rvYOhS7+L5aZCspw1stTViLgN5v6FF1p5cgQ==}
@@ -2193,6 +2228,9 @@ packages:
   '@ungap/structured-clone@1.3.0':
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
 
+  '@upstash/redis@1.34.6':
+    resolution: {integrity: sha512-/ic+NszsXyIl2P8aExL7xETxgmzyhn6txG4senGDgd524bypGEJs1TMzLDeOV+PFVuacc10wZVJLIj6aRZZNaw==}
+
   '@upstash/vector@1.2.1':
     resolution: {integrity: sha512-xKA9qTgbnPsxym/ymgwmaJbJHSTA6b5B1SNyTqJerV8322xn6eJM+p3xZPxKJYDPfSea7RgVxsTkhE9I/mOaOw==}
 
@@ -2507,6 +2545,10 @@ packages:
     resolution: {integrity: sha512-BSeNnyus75C4//NQ9gQt1/csTXyo/8Sb+afLAkzAptFuMsod9HFokGNudZpi/oQV73hnVK+sR+5PVRMd+Dr7YQ==}
     engines: {node: '>=12'}
 
+  cluster-key-slot@1.1.2:
+    resolution: {integrity: sha512-RMr0FhtfXemyinomL4hrWcYJxmX6deFdCxpJzhDttxgO1+bcCnkk+9drydLVDmAMG7NE6aN/fl4F7ucU/90gAA==}
+    engines: {node: '>=0.10.0'}
+
   cohere-ai@7.14.0:
     resolution: {integrity: sha512-hSo2/tFV29whjFFtVtdS7kHmtUsjfMO1sgwE/d5bhOE4O7Vkj5G1R9lLIqkIprp/+rrvCq3HGvEaOgry7xRcDA==}
 
@@ -2590,6 +2632,9 @@ packages:
   cross-spawn@7.0.6:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
+
+  crypto-js@4.2.0:
+    resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
 
   csv-parse@5.6.0:
     resolution: {integrity: sha512-l3nz3euub2QMg5ouu5U09Ew9Wf6/wQ8I++ch1loQ0ljmzhmfZYrH9fflS22i/PQEvsPvxCwxgz5q7UB8K1JO4Q==}
@@ -3807,6 +3852,10 @@ packages:
     resolution: {integrity: sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==}
     engines: {node: '>=0.10.0'}
 
+  postgres@3.4.5:
+    resolution: {integrity: sha512-cDWgoah1Gez9rN3H4165peY9qfpEo+SA61oQv65O3cRUE1pOEoJWwddwcqKE8XZYjbblOJlYDlLV4h67HrEVDg==}
+    engines: {node: '>=12'}
+
   posthog-node@4.10.2:
     resolution: {integrity: sha512-mylSjhI3R69FF+2T/HT5ZcFnS0q22/U/JrvfkI4vEr+BLwjSOE8a3CvbXJEDzDXw44wg5iJuXBZYAEu15rvERg==}
     engines: {node: '>=15.0.0'}
@@ -3917,6 +3966,9 @@ packages:
   real-require@0.2.0:
     resolution: {integrity: sha512-57frrGM/OCTLqLOAh0mhVA9VBMHd+9U7Zb2THMGdBUoZVOtGbJzjxsYGDJ3A9AYYCP4hn6y1TVbaOfzWtm5GFg==}
     engines: {node: '>= 12.13.0'}
+
+  redis@4.7.0:
+    resolution: {integrity: sha512-zvmkHEAdGMn+hMRXuMBtu4Vo5P6rHQjLoHftu+lBqq8ZTA3RCVC/WzD790bkKKiNFp7d5/9PcSD19fJyyRvOdQ==}
 
   regex-recursion@5.1.1:
     resolution: {integrity: sha512-ae7SBCbzVNrIjgSbh7wMznPcQel1DNlDtzensnFxpiNpXt1U2ju/bHugH422r+4LAVS1FpW1YCwilmnNsjum9w==}
@@ -6320,6 +6372,61 @@ snapshots:
       - typescript
       - utf-8-validate
 
+  '@mastra/memory@0.2.6(@aws-crypto/sha256-js@5.2.0)(@aws-sdk/credential-providers@3.777.0)(@huggingface/transformers@3.4.1)(cohere-ai@7.16.0)(gpt-tokenizer@2.9.0)(openai@4.90.0(ws@8.18.1)(zod@3.24.2))(pg-query-stream@4.8.1(pg@8.14.1))(react@19.0.0)(tree-sitter@0.22.4)(typescript@5.8.2)(web-tree-sitter@0.24.7)(ws@8.18.1)':
+    dependencies:
+      '@mastra/core': 0.7.0(react@19.0.0)
+      '@mastra/rag': 0.1.14(@aws-crypto/sha256-js@5.2.0)(@aws-sdk/credential-providers@3.777.0)(@huggingface/transformers@3.4.1)(ai@4.2.8(react@19.0.0)(zod@3.24.2))(cohere-ai@7.16.0)(gpt-tokenizer@2.9.0)(openai@4.90.0(ws@8.18.1)(zod@3.24.2))(pg-query-stream@4.8.1(pg@8.14.1))(pg@8.14.1)(react@19.0.0)(tree-sitter@0.22.4)(typescript@5.8.2)(web-tree-sitter@0.24.7)(ws@8.18.1)
+      '@upstash/redis': 1.34.6
+      ai: 4.2.8(react@19.0.0)(zod@3.24.2)
+      pg: 8.14.1
+      pg-pool: 3.8.0(pg@8.14.1)
+      postgres: 3.4.5
+      redis: 4.7.0
+      zod: 3.24.2
+    transitivePeerDependencies:
+      - '@aws-crypto/sha256-js'
+      - '@aws-sdk/credential-providers'
+      - '@edge-runtime/vm'
+      - '@google/generative-ai'
+      - '@huggingface/transformers'
+      - '@mongodb-js/zstd'
+      - '@vitest/browser'
+      - '@vitest/ui'
+      - aws-crt
+      - bare-buffer
+      - bufferutil
+      - cohere-ai
+      - encoding
+      - gcp-metadata
+      - gpt-tokenizer
+      - happy-dom
+      - jsdom
+      - kerberos
+      - less
+      - lightningcss
+      - mongodb-client-encryption
+      - msw
+      - openai
+      - pg-native
+      - pg-query-stream
+      - pgvector
+      - react
+      - sass
+      - sass-embedded
+      - snappy
+      - socks
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+      - tiktoken
+      - tree-sitter
+      - typescript
+      - utf-8-validate
+      - voyageai
+      - web-tree-sitter
+      - ws
+
   '@mastra/pg@0.2.6(pg-query-stream@4.8.1(pg@8.14.1))(react@19.0.0)':
     dependencies:
       '@mastra/core': 0.7.0(react@19.0.0)
@@ -7140,6 +7247,32 @@ snapshots:
 
   '@qdrant/openapi-typescript-fetch@1.2.6': {}
 
+  '@redis/bloom@1.2.0(@redis/client@1.6.0)':
+    dependencies:
+      '@redis/client': 1.6.0
+
+  '@redis/client@1.6.0':
+    dependencies:
+      cluster-key-slot: 1.1.2
+      generic-pool: 3.9.0
+      yallist: 4.0.0
+
+  '@redis/graph@1.1.1(@redis/client@1.6.0)':
+    dependencies:
+      '@redis/client': 1.6.0
+
+  '@redis/json@1.0.7(@redis/client@1.6.0)':
+    dependencies:
+      '@redis/client': 1.6.0
+
+  '@redis/search@1.2.0(@redis/client@1.6.0)':
+    dependencies:
+      '@redis/client': 1.6.0
+
+  '@redis/time-series@1.1.0(@redis/client@1.6.0)':
+    dependencies:
+      '@redis/client': 1.6.0
+
   '@rollup/plugin-alias@5.1.1(rollup@4.37.0)':
     optionalDependencies:
       rollup: 4.37.0
@@ -7759,6 +7892,10 @@ snapshots:
 
   '@ungap/structured-clone@1.3.0': {}
 
+  '@upstash/redis@1.34.6':
+    dependencies:
+      crypto-js: 4.2.0
+
   '@upstash/vector@1.2.1': {}
 
   '@vitest/expect@2.1.9':
@@ -8082,6 +8219,8 @@ snapshots:
       strip-ansi: 6.0.1
       wrap-ansi: 7.0.0
 
+  cluster-key-slot@1.1.2: {}
+
   cohere-ai@7.14.0:
     dependencies:
       '@aws-sdk/client-sagemaker': 3.777.0
@@ -8198,6 +8337,8 @@ snapshots:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
+
+  crypto-js@4.2.0: {}
 
   csv-parse@5.6.0: {}
 
@@ -9572,6 +9713,8 @@ snapshots:
     dependencies:
       xtend: 4.0.2
 
+  postgres@3.4.5: {}
+
   posthog-node@4.10.2:
     dependencies:
       axios: 1.8.4
@@ -9715,6 +9858,15 @@ snapshots:
   readdirp@4.1.2: {}
 
   real-require@0.2.0: {}
+
+  redis@4.7.0:
+    dependencies:
+      '@redis/bloom': 1.2.0(@redis/client@1.6.0)
+      '@redis/client': 1.6.0
+      '@redis/graph': 1.1.1(@redis/client@1.6.0)
+      '@redis/json': 1.0.7(@redis/client@1.6.0)
+      '@redis/search': 1.2.0(@redis/client@1.6.0)
+      '@redis/time-series': 1.1.0(@redis/client@1.6.0)
 
   regex-recursion@5.1.1:
     dependencies:
