@@ -4,7 +4,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "mastra dev"
+    "dev": "mastra dev",
+    "build": "npx mastra build"
   },
   "keywords": [],
   "author": "",
@@ -18,11 +19,11 @@
     "@mastra/pg": "^0.2.6",
     "@mastra/rag": "^0.1.14",
     "ai": "^4.2.8",
-    "mastra": "^0.4.4",
     "zod": "^3.24.2"
   },
   "devDependencies": {
     "@types/node": "^22.13.14",
+    "mastra": "^0.4.4",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2"
   }

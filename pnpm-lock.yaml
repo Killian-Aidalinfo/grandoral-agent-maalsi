@@ -26,9 +26,6 @@ importers:
       ai:
         specifier: ^4.2.8
         version: 4.2.8(react@19.0.0)(zod@3.24.2)
-      mastra:
-        specifier: ^0.4.4
-        version: 0.4.4(@opentelemetry/api@1.9.0)(react@19.0.0)(typescript@5.8.2)
       zod:
         specifier: ^3.24.2
         version: 3.24.2
@@ -36,6 +33,9 @@ importers:
       '@types/node':
         specifier: ^22.13.14
         version: 22.13.14
+      mastra:
+        specifier: ^0.4.4
+        version: 0.4.4(@opentelemetry/api@1.9.0)(react@19.0.0)(typescript@5.8.2)
       tsx:
         specifier: ^4.19.3
         version: 4.19.3
