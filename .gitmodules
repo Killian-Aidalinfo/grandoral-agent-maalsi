@@ -1,3 +1,6 @@
 [submodule "src/content/fiche-de-chris"]
 	path = src/content/fiche-de-chris
 	url = git@github.com:pabios/fiche-de-chris.git
+[submodule "gotrue"]
+	path = gotrue
+	url = https://github.com/netlify/gotrue.git

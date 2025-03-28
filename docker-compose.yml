@@ -20,17 +20,17 @@ services:
     ports:
       - "8888:80"
     environment:
-      PGADMIN_DEFAULT_EMAIL: admin@admin.fr
+      PGADMIN_DEFAULT_EMAIL: admin@adminn.fr
       PGADMIN_DEFAULT_PASSWORD: example
     volumes:
       - ./pgadmin-data:/var/lib/pgadmin
 
-  # auth:
-  #   build: 
-  #     context: ./gotrue
-  #     dockerfile: Dockerfile
-  #   container_name: gotrue
-  #   ports:
-  #     - "9998:9998"
-  #   env_file:
-  #     - .env.development
+  auth:
+    build: 
+      context: ./gotrue-1.0.1
+      dockerfile: Dockerfile
+    container_name: gotrue
+    ports:
+      - "9999:9999"
+    env_file:
+      - .env.development
