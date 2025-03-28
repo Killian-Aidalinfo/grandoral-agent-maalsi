@@ -11,6 +11,7 @@ services:
       - "5432:5432"
     volumes:
       - ./pgdata:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
 
   pgadmin:
     image: dpage/pgadmin4
@@ -23,4 +24,13 @@ services:
       PGADMIN_DEFAULT_PASSWORD: example
     volumes:
       - ./pgadmin-data:/var/lib/pgadmin
-      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+
+  # auth:
+  #   build: 
+  #     context: ./gotrue
+  #     dockerfile: Dockerfile
+  #   container_name: gotrue
+  #   ports:
+  #     - "9998:9998"
+  #   env_file:
+  #     - .env.development
