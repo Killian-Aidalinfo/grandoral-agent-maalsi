@@ -16,4 +16,4 @@ export const mastra = new Mastra({
   }),
 });
 
-await initVector();
+if(process.env.INIT_VECTOR) await initVector();

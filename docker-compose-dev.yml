@@ -1,14 +1,16 @@
 services:
 
   mastra:
-    build: 
-      context: ./mastra
-      dockerfile: Dockerfile
+    image: node:lts
     container_name: mastra
     depends_on:
       - db
     ports:
       - "4111:4111"
+    working_dir: /app
+    volumes:
+      - ./mastra:/app
+    command: npm run dev
     env_file:
       - .env.development
 

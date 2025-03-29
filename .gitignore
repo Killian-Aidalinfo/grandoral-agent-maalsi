@@ -6,4 +6,4 @@ dist
 .env
 *.db
 pgdata/
-pgadmin-data/
+pgadmin-data/ 
