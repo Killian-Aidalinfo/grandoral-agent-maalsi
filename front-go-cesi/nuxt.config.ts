@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
+  ssr: false,
   modules: ['@nuxtjs/tailwindcss', 'shadcn-nuxt'],
   shadcn: {
     /**
@@ -13,5 +14,8 @@ export default defineNuxtConfig({
      * @default "./components/ui"
      */
     componentDir: './components/ui'
-  }
+  },
+  plugins: [
+    '~/plugins/api'
+  ]
 })
