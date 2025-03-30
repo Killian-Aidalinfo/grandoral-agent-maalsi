@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label'
 import { useNuxtApp } from '#app'
 
 const { $api } = useNuxtApp()
-
+const router = useRouter()
 const email = ref('')
 const password = ref('')
 const errorMessage = ref('')
@@ -37,7 +37,7 @@ const loginUser = async () => {
     localStorage.setItem('token', token)
 
     // Rediriger vers une page protégée par exemple
-    // router.push('/dashboard')
+    router.push('/app')
   } catch (error: any) {
     errorMessage.value = error.response?.data?.msg || 'Erreur lors de la connexion.'
   }

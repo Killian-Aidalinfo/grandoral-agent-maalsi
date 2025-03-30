@@ -43,8 +43,6 @@ services:
       context: ./gotrue-1.0.1
       dockerfile: Dockerfile
     container_name: gotrue
-    depends_on:
-      - db
     ports:
       - "9999:9999"
     env_file:

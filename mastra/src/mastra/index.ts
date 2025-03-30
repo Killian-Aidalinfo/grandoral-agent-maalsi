@@ -1,10 +1,10 @@
-
 import { Mastra } from '@mastra/core/mastra';
 import { createLogger } from '@mastra/core/logger';
 import { grandOralO4Mini, grandOralO4 } from './agents';
 import {initVector} from './helpers/vectorManagement';
 import { PgVector } from '@mastra/pg';
 import { verifyToken } from './helpers/jwtManagement';
+import { addApiKeyHandler, getApiKeysHandler, updateApiKeyHandler, deleteApiKeyHandler } from './api/tokenManagement';
 
 const pgVector = new PgVector(process.env.POSTGRES_CONNECTION_STRING!);
 export const mastra = new Mastra({
@@ -26,6 +26,22 @@ export const mastra = new Mastra({
         else return new Response('Unauthorized', { status: 401 });
       },
       path: '/api/*',
+    },
+    {
+      handler: addApiKeyHandler,
+      path: '/api/keys/add',
+    },
+    {
+      handler: getApiKeysHandler,
+      path: '/api/keys/list',
+    },
+    {
+      handler: updateApiKeyHandler,
+      path: '/api/keys/update',
+    },
+    {
+      handler: deleteApiKeyHandler,
+      path: '/api/keys/delete',
     },
   ]
 });

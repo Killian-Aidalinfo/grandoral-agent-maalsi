@@ -5,6 +5,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "mastra dev",
+    "prepare:prisma": "npx prisma db pull && npx prisma generate && npm run dev",
     "build": "npx mastra build"
   },
   "keywords": [],
@@ -19,7 +20,9 @@
     "@mastra/pg": "^0.2.6",
     "@mastra/rag": "^0.1.14",
     "ai": "^4.2.8",
+    "dotenv": "^16.4.7",
     "jsonwebtoken": "^9.0.2",
+    "pg": "^8.14.1",
     "zod": "^3.24.2"
   },
   "devDependencies": {
@@ -37,5 +40,6 @@
         "x64"
       ]
     }
-  }
+  },
+  "packageManager": "pnpm@10.7.0+sha512.6b865ad4b62a1d9842b61d674a393903b871d9244954f652b8842c2b553c72176b278f64c463e52d40fff8aba385c235c8c9ecf5cc7de4fd78b8bb6d49633ab6"
 }

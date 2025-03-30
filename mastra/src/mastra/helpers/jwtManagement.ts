@@ -9,3 +9,17 @@ export const verifyToken = (token: string) => {
     throw new Error('Invalid token');
   }
 };
+
+export const userInfoToken = (token: string): { userId: string } => {
+    if (token.startsWith('Bearer ')) {
+      token = token.slice(7);
+    }
+    try {
+      const decoded = jwt.verify(token, process.env.GOTRUE_JWT_SECRET!) as { sub: string };
+      console.log('decoded', decoded);
+      return { userId: decoded.sub };
+    } catch (error) {
+      console.error('Invalid token:', error);
+      throw new Error('Invalid token');
+    }
+  };

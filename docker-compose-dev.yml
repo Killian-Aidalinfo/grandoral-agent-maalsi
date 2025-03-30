@@ -12,8 +12,7 @@ services:
       - ./mastra:/app
     command: npm run dev
     env_file:
-      - .env.development
-
+      - .env
   db:
     image: pgvector/pgvector:pg17 # PostgreSQL with pgvector support
     container_name: pgvector-db
