@@ -1,10 +1,11 @@
 import { embedMany, embed } from "ai";
-import { openai } from "@ai-sdk/openai";
+import { openai, createOpenAI } from "@ai-sdk/openai";
 import { MDocument, rerank } from "@mastra/rag";
 import { createVectorQueryTool } from "@mastra/rag";
 import { mastra } from "..";
 import { readdir, readFile } from 'fs/promises';
 import { join, extname, basename } from 'path';
+import { store } from "./store";
 
 /**
  * Génère un identifiant unique à partir du chemin du fichier.
@@ -68,7 +69,7 @@ export async function initVector() {
     // 3. Generate embeddings; we need to pass the text of each chunk
     const { embeddings } = await embedMany({
       values: chunks.map(chunk => chunk.text),
-      model: openai.embedding("text-embedding-3-small"),
+      model: dynamicOpenAI.embedding("text-embedding-3-small"),
     });
 
 
@@ -87,12 +88,40 @@ export async function initVector() {
   }
 }
 
+// Créer un client OpenAI avec une interceptation des requêtes pour changer la clé API
+const dynamicOpenAI = createOpenAI({
+  apiKey: "placeholder-will-be-replaced-at-runtime",
+  baseURL: "https://api.openai.com/v1",
+  fetch: async (url, options) => {
+    // Intercepter fetch avant chaque requête
+    try {
+      store.ensureContext();
+      const apiKey = store.get("apiKey");
+      
+      if (apiKey && options.headers) {
+        console.log("Modifying fetch request headers for vectorQueryTool");
+        // Créer une nouvelle instance de Headers
+        const newHeaders = new Headers(options.headers);
+        // Remplacer l'en-tête d'autorisation
+        newHeaders.set("Authorization", `Bearer ${apiKey}`);
+        
+        // Mettre à jour les options avec les nouveaux en-têtes
+        options.headers = newHeaders;
+      }
+    } catch (error) {
+      console.error("Error in fetch intercept for vectorQueryTool:", error);
+    }
+    
+    return fetch(url, options);
+  }
+});
+
 export const vectorQueryTool = createVectorQueryTool({
   vectorStoreName: 'pgVector',
   indexName: 'myCollection',
-  model: openai.embedding('text-embedding-3-small'),
+  model: dynamicOpenAI.embedding('text-embedding-3-small'),
   // description: "Search through our documentation to find relevant information about BYOD topic.",
   reranker: {
-    model: openai("gpt-4o-mini"),
+    model: dynamicOpenAI("gpt-4o-mini"),
   },
 });

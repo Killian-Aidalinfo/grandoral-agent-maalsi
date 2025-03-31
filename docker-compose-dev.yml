@@ -37,7 +37,7 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@adminn.fr
       PGADMIN_DEFAULT_PASSWORD: example
     volumes:
-      - ./pgadmin-data:/var/lib/pgadmin
+      - ./pgadmin:/var/lib/pgadmin
 
   auth:
     build: 
