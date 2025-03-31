@@ -1,6 +1,6 @@
 import { Mastra } from "@mastra/core/mastra";
 import { createLogger } from "@mastra/core/logger";
-import { grandOralO4, grandOralO4Mini, createAgentWithUserApiKey } from "./agents";
+import { grandOralO4, grandOralO4Mini } from "./agents";
 import { initVector } from "./helpers/vectorManagement";
 import { PgVector } from "@mastra/pg";
 import { verifyToken, userInfoToken } from "./helpers/jwtManagement";
@@ -32,24 +32,10 @@ export const mastra = new Mastra({
           store.ensureContext();
           store.set("userId", userId);
 
-          // Récupérer l'API key de l'utilisateur depuis la base de données
           const userApiKey = await getUserApiKey(userId, "openai");
           if (userApiKey) {
-            // Définir l'API key dans le store pour être utilisée par les agents
             store.set("apiKey", userApiKey);
-            console.log("Using custom API key for user:", userId);
           }
-
-          // Si c'est une requête à un agent spécifique, on stocke la clé API pour qu'elle soit
-          // utilisée par createAgentWithUserApiKey() à l'intérieur de l'agent
-          const url = new URL(c.req.url);
-          if (url.pathname.includes('/agents/grandOralO4Mini')) {
-            console.log("Detected request to grandOralO4Mini, API key is set in store");
-            // Pas besoin de remplacer l'agent directement ici
-            // La clé API est déjà dans le store et sera utilisée par l'agent
-            // via la fonction getApiKey lorsque l'agent fera appel à OpenAI
-          }
-
           await next();
         } else return new Response("Unauthorized", { status: 401 });
       },

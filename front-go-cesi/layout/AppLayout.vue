@@ -1,14 +1,17 @@
 <template>
-    <SidebarProvider>
-      <AppSidebar />
-      <main>
-        <SidebarTrigger />
-        <div class="flex w-full max-w-sm flex-col gap-6">
-            <slot />
+  <SidebarProvider>
+    <AppSidebar />
+    <main class="flex w-full min-h-screen">
+      <SidebarTrigger />
+      <div class="flex justify-center w-full">
+        <div class="w-full max-w-4xl px-4">
+          <slot />
         </div>
-      </main>
-    </SidebarProvider>
-  </template>
+      </div>
+    </main>
+  </SidebarProvider>
+</template>
+
   <script setup lang="ts">
   import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
   import AppSidebar from "@/components/internal/components/AppSidebar.vue";

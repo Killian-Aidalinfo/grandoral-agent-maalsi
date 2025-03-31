@@ -20,9 +20,9 @@ export default defineNuxtPlugin((nuxtApp) => {
     (response) => response,
     async (error) => {
       const originalRequest = error.config;
-      const is401 = error.response?.status === 401;
+      const is401 = error.response?.status === 500;
       const refreshToken = localStorage.getItem('refresh_token');
-  
+      console.log(error)
       // 🚨 Si le token est expiré, essaye de le rafraîchir
       if (is401 && refreshToken && !originalRequest._retry) {
         originalRequest._retry = true;
@@ -50,10 +50,11 @@ export default defineNuxtPlugin((nuxtApp) => {
           originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
           return api(originalRequest);
         } catch (refreshError) {
+          console.log("Erreur lors du rafraîchissement du token :", refreshError);
           // ❌ Le refresh a échoué → déconnexion forcée
           localStorage.removeItem('access_token');
           localStorage.removeItem('refresh_token');
-          window.location.href = '/login'; // ou déclenche un logout propre
+          // window.location.href = '/login'; // ou déclenche un logout propre
           return Promise.reject(refreshError);
         }
       }
