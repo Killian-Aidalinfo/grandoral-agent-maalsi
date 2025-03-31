@@ -15,4 +15,14 @@ export const getUserApiKey = async (userId: string, modelName: string): Promise<
   return result.rows[0]?.key || null;
 };
 
+// Fonction pour récupérer la clé API Google d'un utilisateur
+export const getUserGoogleApiKey = async (userId: string): Promise<string | null> => {
+  const result = await pool.query(
+    `SELECT key FROM api_key WHERE user_id = $1 AND model = 'google' LIMIT 1`,
+    [userId]
+  );
+
+  return result.rows[0]?.key || null;
+};
+
 export default pool;
