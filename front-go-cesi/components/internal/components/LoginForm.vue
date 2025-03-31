@@ -30,13 +30,11 @@ const loginUser = async () => {
       },
     })
 
-    const token = response.data.access_token
-    console.log('Token reçu:', token)
+    const { access_token, refresh_token } = response.data
 
-    // Enregistrer le token (ex : dans localStorage ou useCookie)
-    localStorage.setItem('token', token)
+    localStorage.setItem('access_token', access_token)
+    localStorage.setItem('refresh_token', refresh_token)
 
-    // Rediriger vers une page protégée par exemple
     router.push('/app')
   } catch (error: any) {
     errorMessage.value = error.response?.data?.msg || 'Erreur lors de la connexion.'

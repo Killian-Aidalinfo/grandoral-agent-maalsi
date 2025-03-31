@@ -1,4 +1,4 @@
-import pool from '../helpers/dbTool';
+import { pool } from '../helpers/dbTool';
 import { userInfoToken } from '../helpers/jwtManagement';
 
 export const addApiKeyHandler = async (c: any) => {
