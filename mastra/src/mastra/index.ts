@@ -1,8 +1,8 @@
 import { Mastra } from "@mastra/core/mastra";
 import { createLogger } from "@mastra/core/logger";
-import { grandOralO4, grandOralO4Mini } from "./agents";
+import { grandOralO4, grandOralO4Mini, googleGeminiAgent } from "./agents";
 import { initVector } from "./helpers/vectorManagement";
-import { PgVector } from "@mastra/pg";
+import { PgVector, PostgresStore } from "@mastra/pg";
 import { verifyToken, userInfoToken } from "./helpers/jwtManagement";
 import {
   addApiKeyHandler,
@@ -13,8 +13,10 @@ import {
 import { store } from "./helpers/store";
 import { getUserApiKey } from "./helpers/dbTool";
 const pgVector = new PgVector(process.env.POSTGRES_CONNECTION_STRING!);
+
+
 export const mastra = new Mastra({
-  agents: { grandOralO4Mini, grandOralO4 },
+  agents: { grandOralO4Mini, grandOralO4, googleGeminiAgent },
   vectors: { pgVector },
   logger: createLogger({
     name: "Mastra",

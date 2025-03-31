@@ -41,6 +41,9 @@
         <SelectItem value="grandOralO4">
           GPT 4o
         </SelectItem>
+        <SelectItem value="googleGeminiAgent">
+          Gemini (gemini-2.5-pro-exp-03-25)
+        </SelectItem>
       </SelectGroup>
     </SelectContent>
   </Select>
