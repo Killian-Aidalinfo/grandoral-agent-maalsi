@@ -127,18 +127,10 @@ const sendMessage = async () => {
       messages: [{ role: "user", content: userMessage }],
     };
 
-    // Ajout des IDs s'ils existent
-    if (threadId.value) payload.threadId = threadId.value;
-    if (resourceId.value) payload.resourceId = resourceId.value;
-
     const response = await $api.post(
       `/mastra/agents/${selectedValue.value}/stream`,
       payload,
     );
-
-    // Stockage des IDs retournés par l'API pour les messages suivants
-    if (response.data.threadId) threadId.value = response.data.threadId;
-    if (response.data.sourceId) sourceId.value = response.data.sourceId;
 
     const assistantMessage = extractReadableMessage(response.data);
     messages.value.push({ role: "assistant", content: assistantMessage });
