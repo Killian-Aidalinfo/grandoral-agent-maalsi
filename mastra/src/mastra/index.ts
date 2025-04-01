@@ -1,8 +1,13 @@
 import { Mastra } from "@mastra/core/mastra";
 import { createLogger } from "@mastra/core/logger";
-import { grandOralO4, grandOralO4Mini, googleGeminiAgent } from "./agents";
+import {
+  grandOralO4,
+  grandOralO4Mini,
+  googleGeminiAgent,
+  deepseekScw,
+} from "./agents";
 import { initVector } from "./helpers/vectorManagement";
-import { PgVector, PostgresStore } from "@mastra/pg";
+import { PgVector } from "@mastra/pg";
 import { verifyToken, userInfoToken } from "./helpers/jwtManagement";
 import {
   addApiKeyHandler,
@@ -11,12 +16,11 @@ import {
   deleteApiKeyHandler,
 } from "./api/tokenManagement";
 import { store } from "./helpers/store";
-import { getUserApiKey } from "./helpers/dbTool";
+
 const pgVector = new PgVector(process.env.POSTGRES_CONNECTION_STRING!);
 
-
 export const mastra = new Mastra({
-  agents: { grandOralO4Mini, grandOralO4, googleGeminiAgent },
+  agents: { grandOralO4Mini, grandOralO4, googleGeminiAgent, deepseekScw },
   vectors: { pgVector },
   logger: createLogger({
     name: "Mastra",
@@ -34,10 +38,6 @@ export const mastra = new Mastra({
           store.ensureContext();
           store.set("userId", userId);
 
-          const userApiKey = await getUserApiKey(userId, "openai");
-          if (userApiKey) {
-            store.set("apiKey", userApiKey);
-          }
           await next();
         } else return new Response("Unauthorized", { status: 401 });
       },

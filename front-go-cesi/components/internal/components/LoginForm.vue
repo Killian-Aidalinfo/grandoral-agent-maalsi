@@ -55,7 +55,7 @@ const loginUser = async () => {
       <CardContent>
         <form @submit.prevent="loginUser">
           <div class="grid gap-6">
-            <div class="flex flex-col gap-4">
+            <!-- <div class="flex flex-col gap-4">
               <Button variant="outline" class="w-full">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path
@@ -79,7 +79,7 @@ const loginUser = async () => {
               <span class="relative z-10 bg-background px-2 text-muted-foreground">
                 Or continue with
               </span>
-            </div>
+            </div> -->
             <div class="grid gap-6">
               <div class="grid gap-2">
                 <Label html-for="email">Email</Label>
