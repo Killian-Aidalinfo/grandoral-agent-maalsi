@@ -25,4 +25,28 @@ export const getUserThreads = async (userId: string) => {
   return result.rows;
 };
 
+export const getThreadMessages = async (threadId: string) => {
+  const result = await pool.query(
+    `SELECT * FROM public.mastra_messages 
+     WHERE "thread_id" = $1
+     ORDER BY id ASC`,
+    [threadId]
+  );
+  return result.rows;
+};
+
+export const aclThreadUser = async (threadId: string, userId: string) => {
+  const result = await pool.query(
+    `SELECT * FROM public.mastra_threads
+     WHERE id = $1
+     AND "resourceId" = $2`,
+    [threadId, userId]
+  );
+  if (result.rows.length === 0) {
+    return false;
+  }else {
+  return true;
+  }
+};
+
 export default pool;
