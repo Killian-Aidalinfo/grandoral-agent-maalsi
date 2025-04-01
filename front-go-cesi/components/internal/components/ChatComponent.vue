@@ -24,31 +24,30 @@
       </div>
     </div>
 
-    <!-- Input en bas -->
+    <!-- Zone de saisie -->
     <div class="border-t p-4 bg-background">
       <form
         @submit.prevent="sendMessage"
         class="flex gap-2 max-w-2xl mx-auto">
-        <Select v-model="selectedValue">
+        <Select v-model="selectedModel">
           <SelectTrigger class="w-[180px]">
             <SelectValue placeholder="Modèle" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
               <SelectLabel>Modèle</SelectLabel>
-              <SelectItem value="grandOralO4Mini"> GPT 4o-Mini </SelectItem>
-              <SelectItem value="grandOralO4"> GPT 4o </SelectItem>
-              <SelectItem value="googleGeminiAgent">
-                Gemini (gemini-2.5-pro-exp-03-25)
-              </SelectItem>
-              <SelectItem value="deepseekScw">
-                Scaleway (deepseek-r1-distill-llama-70b)
+              <SelectItem 
+                v-for="model in availableModels" 
+                :key="model.value" 
+                :value="model.value"
+              >
+                {{ model.label }}
               </SelectItem>
             </SelectGroup>
           </SelectContent>
         </Select>
         <Input
-          v-model="input"
+          v-model="userInput"
           placeholder="Pose ta question ici..."
           class="flex-1" />
         <Button type="submit">Envoyer</Button>
@@ -56,8 +55,9 @@
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
-import { ref, nextTick } from "vue";
+import { ref, onMounted, nextTick } from "vue";
 import { useNuxtApp } from "#app";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -70,17 +70,115 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+
+// Types
+interface Message {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
+interface AIModel {
+  value: string;
+  label: string;
+}
+
+interface HistoricalMessage {
+  id: string;
+  thread_id: string;
+  content: string;
+  role: string;
+  type?: string;
+  createdAt: string;
+}
+
+// Constants
+const WELCOME_MESSAGE: Message = {
+  role: "assistant",
+  content: "Bienvenue ! Pose-moi une question sur le grand oral :)",
+};
+
+const availableModels: AIModel[] = [
+  { value: "grandOralO4Mini", label: "GPT 4o-Mini" },
+  { value: "grandOralO4", label: "GPT 4o" },
+  { value: "googleGeminiAgent", label: "Gemini (gemini-2.5-pro-exp-03-25)" },
+  { value: "deepseekScw", label: "Scaleway (deepseek-r1-distill-llama-70b)" }
+];
+
+// Composables
 const { $api } = useNuxtApp();
-const selectedValue = ref("grandOralO4Mini");
 const route = useRoute();
-const input = ref("");
-const messages = ref([
-  {
-    role: "assistant",
-    content: "Bienvenue ! Pose-moi une question sur le grand oral :)",
-  },
-]);
+
+// Refs
+const selectedModel = ref("grandOralO4Mini");
+const userInput = ref("");
+const messages = ref<Message[]>([WELCOME_MESSAGE]);
 const resourceId = ref('');
+const chatBox = ref<HTMLElement>();
+const threadId = ref<string>(crypto.randomUUID());
+
+// Helpers
+const scrollToBottom = async () => {
+  await nextTick();
+  chatBox.value?.scrollTo({
+    top: chatBox.value.scrollHeight,
+    behavior: "smooth",
+  });
+};
+
+const extractReadableMessage = (rawData: string): string => {
+  const lines = rawData.split("\n");
+  const contentLines = lines.filter((line) => line.startsWith("0:"));
+
+  return contentLines
+    .map((line) => {
+      const match = line.match(/^0:\s*"?(.*?)"?$/);
+      return match ? match[1] : "";
+    })
+    .join("");
+};
+const parseHistoricalMessages = (messages: HistoricalMessage[]): Message[] => {
+  return messages
+    .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+    .map(msg => {
+      if (msg.content && typeof msg.content === 'string') {
+        try {
+          const parsed = JSON.parse(msg.content);
+          
+          // Si c'est un tableau, cherche les éléments de type "text"
+          if (Array.isArray(parsed)) {
+            const textContent = parsed
+              .filter(item => item.type === 'text')
+              .map(item => item.text)
+              .join('\n');
+
+            if (textContent) {
+              return {
+                role: 'assistant',
+                content: textContent
+              };
+            }
+          }
+
+          // Si ce n'est pas un message de type "text", on retourne null
+          return null;
+
+        } catch (e) {
+          // Si ce n'est pas du JSON, c'est probablement un message utilisateur
+          if (msg.role === 'user') {
+            return {
+              role: 'user',
+              content: msg.content
+            };
+          }
+          return null;
+        }
+      }
+
+      return null;
+    })
+    .filter((msg): msg is Message => msg !== null && msg.content.trim() !== '');
+};
+// API calls
 const fetchUserInfo = async () => {
   try {
     const response = await $api.get('/auth/user');
@@ -89,66 +187,59 @@ const fetchUserInfo = async () => {
     console.error("Erreur lors de la récupération des infos utilisateur:", error);
   }
 };
-const chatBox = ref<HTMLElement>();
-const extractReadableMessage = (rawData: string) => {
-  const lines = rawData.split("\n");
-  const contentLines = lines.filter((line) => line.startsWith("0:"));
 
-  const combined = contentLines
-    .map((line) => {
-      const match = line.match(/^0:\s*"?(.*?)"?$/);
-      return match ? match[1] : "";
-    })
-    .join("");
-
-  return combined;
+const loadThreadHistory = async () => {
+  if (!route.params.id) return;
+  
+  try {
+    threadId.value = route.params.id as string;
+    const response = await $api.get(`/mastra/messages/custom/${threadId.value}`);
+    const historicalMessages = parseHistoricalMessages(response.data);
+    
+    // Trie les messages par date si nécessaire
+    messages.value = [
+      WELCOME_MESSAGE,
+      ...historicalMessages
+    ];
+    await scrollToBottom();
+  } catch (error) {
+    console.error("Erreur lors de la récupération de l'historique:", error);
+  }
 };
-const scrollToBottom = async () => {
-  await nextTick();
-  chatBox.value?.scrollTo({
-    top: chatBox.value.scrollHeight,
-    behavior: "smooth",
-  });
-};
-const generateUUID = () => {
-  return crypto.randomUUID();
-};
-const threadId = ref<any>(generateUUID());
-if(route.params.id) {
-  threadId.value = route.params.id;
-}
 const sendMessage = async () => {
-  if (!input.value.trim()) return;
+  if (!userInput.value.trim()) return;
 
-  messages.value.push({ role: "user", content: input.value });
-  const userMessage = input.value;
-  input.value = "";
+  // Ajoute le message de l'utilisateur
+  messages.value.push({ role: "user", content: userInput.value });
+  const userMessage = userInput.value;
+  userInput.value = "";
 
   try {
-    const payload: any = {
+    const payload = {
       messages: [{ role: "user", content: userMessage }],
       threadId: threadId.value,
       resourceId: resourceId.value,
     };
 
     const response = await $api.post(
-      `/mastra/agents/${selectedValue.value}/stream`,
+      `/mastra/agents/${selectedModel.value}/stream`,
       payload,
     );
 
     const assistantMessage = extractReadableMessage(response.data);
     messages.value.push({ role: "assistant", content: assistantMessage });
-    scrollToBottom();
+    await scrollToBottom();
   } catch (error: any) {
     messages.value.push({
       role: "assistant",
-      content:
-        "Erreur lors de la requête : " +
-        (error.response?.data?.message || error.message),
+      content: `Erreur lors de la requête : ${error.response?.data?.message || error.message}`,
     });
   }
 };
+
+// Lifecycle
 onMounted(async () => {
   await fetchUserInfo();
+  await loadThreadHistory();
 });
 </script>

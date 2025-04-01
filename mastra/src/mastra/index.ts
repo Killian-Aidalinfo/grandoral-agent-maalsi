@@ -77,10 +77,10 @@ export const mastra = new Mastra({
         if (verifyToken(authHeader)) {
           const { userId } = userInfoToken(authHeader);
           try {
-            if(!await aclThreadUser(c.params.threadId, userId)) {
+            if(!await aclThreadUser(c.req.param('threadId'), userId)) {
               return new Response("Forbidden", { status: 403 });
             }
-            const messages = await getThreadMessages(c.params.threadId);
+            const messages = await getThreadMessages(c.req.param('threadId'));
             return new Response(JSON.stringify(messages), {
               status: 200,
               headers: {

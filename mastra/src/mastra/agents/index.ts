@@ -1,4 +1,3 @@
-import { openai, createOpenAI } from "@ai-sdk/openai";
 import { Agent } from "@mastra/core/agent";
 import { PGVECTOR_PROMPT } from "@mastra/rag";
 import {

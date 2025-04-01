@@ -36,18 +36,10 @@ import ChatHistory from "./ChatHistory.vue";
   <Sidebar>
     <SidebarContent>
       <SidebarGroup>
-        <SidebarGroupLabel>Application</SidebarGroupLabel>
+        <SidebarGroupLabel>Historique</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
             <ChatHistory />
-              <!-- <SidebarMenuItem v-for="item in items" :key="item.title">
-                <SidebarMenuButton asChild>
-                    <a :href="item.url">
-                      <component :is="item.icon" />
-                      <span>{{item.title}}</span>
-                    </a>
-                </SidebarMenuButton>
-              </SidebarMenuItem> -->
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>
