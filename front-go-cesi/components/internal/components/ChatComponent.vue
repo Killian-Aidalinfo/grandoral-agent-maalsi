@@ -79,7 +79,16 @@ const messages = ref([
     content: "Bienvenue ! Pose-moi une question sur le grand oral :)",
   },
 ]);
-
+const resourceId = ref('');
+const fetchUserInfo = async () => {
+  try {
+    const response = await $api.get('/auth/user');
+    // On suppose que l'ID utilisateur est dans response.data.id
+    resourceId.value = response.data.id;
+  } catch (error: any) {
+    console.error("Erreur lors de la récupération des infos utilisateur:", error);
+  }
+};
 const chatBox = ref<HTMLElement>();
 const extractReadableMessage = (rawData: string) => {
   const lines = rawData.split("\n");
@@ -101,32 +110,37 @@ const scrollToBottom = async () => {
     behavior: "smooth",
   });
 };
-
+const generateUUID = () => {
+  return crypto.randomUUID();
+};
+const threadId = ref<string>(generateUUID());
 const sendMessage = async () => {
   if (!input.value.trim()) return;
 
-  // Ajoute le message utilisateur dans la liste
   messages.value.push({ role: "user", content: input.value });
-
   const userMessage = input.value;
   input.value = "";
 
   try {
+    // Préparation du payload
+    const payload: any = {
+      messages: [{ role: "user", content: userMessage }],
+    };
+
+    // Ajout des IDs s'ils existent
+    if (threadId.value) payload.threadId = threadId.value;
+    if (resourceId.value) payload.resourceId = resourceId.value;
+
     const response = await $api.post(
       `/mastra/agents/${selectedValue.value}/stream`,
-      {
-        messages: [{ role: "user", content: userMessage }],
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
+      payload,
     );
 
-    // On suppose que la réponse est de type JSON avec un champ `content`
-    const assistantMessage = extractReadableMessage(response.data);
+    // Stockage des IDs retournés par l'API pour les messages suivants
+    if (response.data.threadId) threadId.value = response.data.threadId;
+    if (response.data.sourceId) sourceId.value = response.data.sourceId;
 
+    const assistantMessage = extractReadableMessage(response.data);
     messages.value.push({ role: "assistant", content: assistantMessage });
     scrollToBottom();
   } catch (error: any) {
@@ -138,4 +152,7 @@ const sendMessage = async () => {
     });
   }
 };
+onMounted(async () => {
+  await fetchUserInfo();
+});
 </script>
