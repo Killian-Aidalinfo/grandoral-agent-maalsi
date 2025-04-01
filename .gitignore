@@ -8,3 +8,4 @@ dist
 pgdata/
 pgadmin-data/ 
 pgadmin
+.DS_Store

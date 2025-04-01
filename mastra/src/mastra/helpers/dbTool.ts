@@ -15,4 +15,14 @@ export const getUserApiKey = async (userId: string, modelName: string): Promise<
   return result.rows[0]?.key || null;
 };
 
+export const getUserThreads = async (userId: string) => {
+  const result = await pool.query(
+    `SELECT * FROM public.mastra_threads 
+     WHERE "resourceId" = $1
+     ORDER BY id ASC`,
+    [userId]
+  );
+  return result.rows;
+};
+
 export default pool;

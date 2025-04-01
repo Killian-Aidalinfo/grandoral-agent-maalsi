@@ -16,6 +16,7 @@ import {
   deleteApiKeyHandler,
 } from "./api/tokenManagement";
 import { store } from "./helpers/store";
+import { getUserThreads } from "./helpers/dbTool";
 
 const pgVector = new PgVector(process.env.POSTGRES_CONNECTION_STRING!);
 
@@ -42,6 +43,30 @@ export const mastra = new Mastra({
         } else return new Response("Unauthorized", { status: 401 });
       },
       path: "/api/*",
+    },
+    {
+      handler: async (c, next) => {
+        const authHeader = c.req.header("Authorization");
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
+          return new Response("Unauthorized", { status: 401 });
+        }
+        if (verifyToken(authHeader)) {
+          const { userId } = userInfoToken(authHeader);
+          try {
+            const threads = await getUserThreads(userId);
+            return new Response(JSON.stringify(threads), {
+              status: 200,
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+          } catch (error) {
+            console.error("Error fetching threads:", error);
+            return new Response("Internal Server Error", { status: 500 });
+          }
+        }
+      },
+      path: "/api/threads/user",
     },
     {
       handler: addApiKeyHandler,

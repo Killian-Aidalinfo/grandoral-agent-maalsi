@@ -11,12 +11,21 @@ import {
   dynamicGoogle,
   dynamicScaleway,
 } from "../helpers/modelHelper";
+import { PostgresStore } from "@mastra/pg";
 
 const prompt = `
 Process queries using the provided context. Structure responses to be concise and relevant.
 ${PGVECTOR_PROMPT}
 `;
-const memory = new Memory();
+const memory = new Memory({
+  storage: new PostgresStore({
+    host: "db",
+    port: 5432,
+    user: "postgres",
+    database: "cesi",
+    password: "password",
+  }),
+});
 
 export const grandOralO4Mini = new Agent({
   name: "grand-oral-o4-mini",

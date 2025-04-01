@@ -72,6 +72,7 @@ import {
 } from "@/components/ui/select";
 const { $api } = useNuxtApp();
 const selectedValue = ref("grandOralO4Mini");
+const route = useRoute();
 const input = ref("");
 const messages = ref([
   {
@@ -83,7 +84,6 @@ const resourceId = ref('');
 const fetchUserInfo = async () => {
   try {
     const response = await $api.get('/auth/user');
-    // On suppose que l'ID utilisateur est dans response.data.id
     resourceId.value = response.data.id;
   } catch (error: any) {
     console.error("Erreur lors de la récupération des infos utilisateur:", error);
@@ -113,7 +113,10 @@ const scrollToBottom = async () => {
 const generateUUID = () => {
   return crypto.randomUUID();
 };
-const threadId = ref<string>(generateUUID());
+const threadId = ref<any>(generateUUID());
+if(route.params.id) {
+  threadId.value = route.params.id;
+}
 const sendMessage = async () => {
   if (!input.value.trim()) return;
 
@@ -122,9 +125,10 @@ const sendMessage = async () => {
   input.value = "";
 
   try {
-    // Préparation du payload
     const payload: any = {
       messages: [{ role: "user", content: userMessage }],
+      threadId: threadId.value,
+      resourceId: resourceId.value,
     };
 
     const response = await $api.post(

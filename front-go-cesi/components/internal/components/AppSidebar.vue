@@ -10,7 +10,12 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 // Menu items.
 const items = [
   {
@@ -24,6 +29,7 @@ const items = [
     icon: Settings,
   },
 ];
+import ChatHistory from "./ChatHistory.vue";
 </script>
 
 <template>
@@ -33,17 +39,43 @@ const items = [
         <SidebarGroupLabel>Application</SidebarGroupLabel>
         <SidebarGroupContent>
           <SidebarMenu>
-              <SidebarMenuItem v-for="item in items" :key="item.title">
+            <ChatHistory />
+              <!-- <SidebarMenuItem v-for="item in items" :key="item.title">
                 <SidebarMenuButton asChild>
                     <a :href="item.url">
                       <component :is="item.icon" />
                       <span>{{item.title}}</span>
                     </a>
                 </SidebarMenuButton>
-              </SidebarMenuItem>
+              </SidebarMenuItem> -->
           </SidebarMenu>
         </SidebarGroupContent>
       </SidebarGroup>
     </SidebarContent>
+    <SidebarFooter>
+      <SidebarMenu>
+          <SidebarMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuButton>
+                    Options
+                  <ChevronUp class="ml-auto" />
+                </SidebarMenuButton>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                side="top"
+                class="w-[--reka-popper-anchor-width]"
+              >
+              <DropdownMenuItem v-for="item in items" :key="item.title">
+                    <a :href="item.url">
+                      <!-- <component :is="item.icon" /> -->
+                      <span>{{item.title}}</span>
+                    </a>
+              </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </SidebarMenuItem>
+        </SidebarMenu>
+    </SidebarFooter>
   </Sidebar>
 </template>
