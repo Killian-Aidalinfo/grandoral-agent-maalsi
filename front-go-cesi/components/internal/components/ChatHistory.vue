@@ -4,6 +4,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
+
 const { $api } = useNuxtApp()
 const threads = ref([])
 const error = ref(null)
@@ -28,8 +29,8 @@ onBeforeMount(() => {
 
 <template>
     <SidebarMenuItem v-for="item in threads" :key="item.id">
-        <SidebarMenuButton asChild>
-            <a :href="'/app/chat/' + item.id">
+        <SidebarMenuButton asChild class="px-5">
+            <a :href="'/app/chat/' + item.id" class="truncate block overflow-hidden whitespace-nowrap">
                 {{ item.title }}
             </a>
         </SidebarMenuButton>

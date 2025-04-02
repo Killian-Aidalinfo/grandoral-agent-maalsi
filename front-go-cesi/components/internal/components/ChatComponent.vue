@@ -22,6 +22,13 @@
           </div>
         </div>
       </div>
+        <div v-if="isLoading" class="max-w-2xl mx-auto">
+    <div class="flex items-center space-x-1">
+      <div class="animate-bounce h-2 w-2 bg-muted-foreground rounded-full" style="animation-delay: 0s"></div>
+      <div class="animate-bounce h-2 w-2 bg-muted-foreground rounded-full" style="animation-delay: 0.2s"></div>
+      <div class="animate-bounce h-2 w-2 bg-muted-foreground rounded-full" style="animation-delay: 0.4s"></div>
+    </div>
+  </div>
     </div>
 
     <!-- Zone de saisie -->
@@ -114,7 +121,8 @@ const messages = ref<Message[]>([WELCOME_MESSAGE]);
 const resourceId = ref('');
 const chatBox = ref<HTMLElement>();
 const threadId = ref<string>(crypto.randomUUID());
-
+// Ajoutez ceci avec les autres refs
+const isLoading = ref(false);
 // Helpers
 const scrollToBottom = async () => {
   await nextTick();
@@ -212,6 +220,7 @@ const sendMessage = async () => {
   messages.value.push({ role: "user", content: userInput.value });
   const userMessage = userInput.value;
   userInput.value = "";
+  isLoading.value = true; // Active le loading
 
   try {
     const payload = {
@@ -233,6 +242,8 @@ const sendMessage = async () => {
       role: "assistant",
       content: `Erreur lors de la requête : ${error.response?.data?.message || error.message}`,
     });
+  }finally {
+    isLoading.value = false; // Désactive le loading
   }
 };
 
