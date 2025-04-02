@@ -1,7 +1,7 @@
 import { embedMany, embed } from "ai";
 import { MDocument, rerank } from "@mastra/rag";
 import { createVectorQueryTool } from "@mastra/rag";
-import { mastra } from "..";
+import { mastra } from "../index";
 import { readdir, readFile } from "fs/promises";
 import { join, extname, basename } from "path";
 import {
@@ -41,17 +41,25 @@ export async function initVector() {
   const markdownFiles = await collectMarkdownFiles(rootDirectory, []);
   const vectorStore = mastra.getVector("pgVector");
   const indexName = "myCollection";
+  // Drop the existing collection if it exists
   try {
-    await vectorStore.deleteIndex({ indexName });
+    // Vérifier si la table existe avant de la supprimer
+    const dropQuery = `DROP TABLE IF EXISTS "${indexName}"`;
+    await (vectorStore as any).pool.query(dropQuery);
+    console.log(`Index '${indexName}' successfully deleted`);
   } catch (error) {
-    console.warn(
-      `Index '${indexName}' could not be deleted or did not exist:`,
-      error
-    );
+    console.error(`Error deleting index '${indexName}':`, error);
   }
+  // try {
+  //   await vectorStore.deleteIndex({ indexName });
+  // } catch (error) {
+  //   console.warn(
+  //     `Index '${indexName}' could not be deleted or did not exist:`,
+  //     error
+  //   );
+  // }
   for (const filePath of markdownFiles) {
     const content = await readFile(filePath, "utf8");
-    console.log("content !!", content);
     const doc = MDocument.fromMarkdown(content);
     // 2. Create chunks
     const chunks = await doc.chunk({

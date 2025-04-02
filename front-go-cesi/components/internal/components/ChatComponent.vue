@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col h-screen max-h-screen pt-10">
+  <div class="flex flex-col h-screen max-h-screen">
     <!-- Zone d'affichage des messages -->
     <div
       ref="chatBox"
@@ -57,7 +57,6 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from "vue";
 import { useNuxtApp } from "#app";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";

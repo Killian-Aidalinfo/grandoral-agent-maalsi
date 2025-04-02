@@ -1,14 +1,16 @@
 <template>
   <SidebarProvider>
     <AppSidebar />
-    <main class="flex w-full min-h-screen">
+    <SidebarInset>
+      <main class="flex w-full min-h-screen">
       <SidebarTrigger />
       <div class="flex justify-center w-full">
-        <div class="w-full max-w-4xl px-4">
+        <div class="w-full max-w-4xl">
           <slot />
         </div>
       </div>
     </main>
+    </SidebarInset>
   </SidebarProvider>
 </template>
 
